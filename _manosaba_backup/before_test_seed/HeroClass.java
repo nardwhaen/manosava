@@ -63,10 +63,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlam
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfMindVision;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfPurity;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfExperience;
-import com.shatteredpixel.shatteredpixeldungeon.items.TengusMask;
-import com.shatteredpixel.shatteredpixeldungeon.items.KingsCrown;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
@@ -195,27 +191,6 @@ public enum HeroClass {
 
 		new PotionOfHealing().identify();
 		new PotionOfStrength().identify();
-
-		//[Manosaba] 테스트용 시드
-		if (isSherryTestSeed()) giveSherryTestItems();
-	}
-
-	//[Manosaba] 테스트용 시드: 시드 입력칸에 SHERRYTEST (대소문자·띄어쓰기 무시)를 넣고 셰리로 시작하면 테스트 아이템 지급.
-	//시드를 넣은 게임은 원래 게임 규칙대로 랭킹·배지에 기록되지 않음.
-	public static final String SHERRY_TEST_SEED = "SHERRYTEST";
-
-	public static boolean isSherryTestSeed(){
-		return !Dungeon.daily && Dungeon.customSeedText != null
-				&& Dungeon.customSeedText.replaceAll("\\s", "").equalsIgnoreCase(SHERRY_TEST_SEED);
-	}
-
-	private static void giveSherryTestItems(){
-		new TengusMask().collect();                                   //보조직업 선택 가면
-		new KingsCrown().collect();                                   //갑옷 능력 선택 왕관
-		new ScrollOfUpgrade().quantity(99).identify().collect();      //강화의 주문서 99
-		new PotionOfStrength().quantity(99).identify().collect();     //힘의 물약 99
-		new PotionOfExperience().quantity(99).identify().collect();   //경험의 물약 99
-		new ChaliceOfBlood().identify().collect();                    //피의 성배
 	}
 
 	private static void initMage( Hero hero ) {
