@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class Magnifier extends WornShortsword {
 
 	{
-		image = ItemSpriteSheet.MAGNIFIER; //[Manosaba] 돋보기 전용 이미지
+		image = ItemSpriteSheet.WORN_SHORTSWORD; //TODO 돋보기 전용 이미지
 	}
 
 }

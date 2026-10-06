@@ -18,8 +18,3 @@ local.properties
 #intellij project files
 *.iml
 *.idea
-
-#[Manosaba] 서명 키 (공개 저장소에 올리지 않음)
-keystore.properties
-*.keystore
-*.jks

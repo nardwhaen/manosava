@@ -224,7 +224,6 @@ public class ItemSpriteSheet {
 	public static final int RAPIER          = WEP_TIER1+3;
 	public static final int DAGGER          = WEP_TIER1+4;
 	public static final int MAGES_STAFF     = WEP_TIER1+5;
-	public static final int MAGNIFIER       = WEP_TIER1+6; //[Manosaba] 셰리 돋보기
 	static{
 		assignItemRect(WORN_SHORTSWORD, 13, 13);
 		assignItemRect(CUDGEL,          15, 15);
@@ -232,7 +231,6 @@ public class ItemSpriteSheet {
 		assignItemRect(RAPIER,          13, 14);
 		assignItemRect(DAGGER,          12, 13);
 		assignItemRect(MAGES_STAFF,     15, 16);
-		assignItemRect(MAGNIFIER,       15, 15); //[Manosaba]
 	}
 
 	private static final int WEP_TIER2      =                               xy(9, 7);   //8 slots

@@ -1,13 +1,5 @@
 apply plugin: 'com.android.application'
 
-//[Manosaba] 모드 전용 서명 키. 어느 PC에서 빌드해도 같은 키로 서명돼서 폰에 '업데이트'로 설치됨.
-//keystore.properties와 manosaba.keystore는 GitHub에 올리지 않음(.gitignore). 다른 PC에는 직접 복사해야 함.
-def manosabaKeyFile = rootProject.file('keystore.properties')
-def manosabaKey = new Properties()
-if (manosabaKeyFile.exists()) {
-    manosabaKeyFile.withInputStream { manosabaKey.load(it) }
-}
-
 android {
     namespace 'com.shatteredpixel.shatteredpixeldungeon.android'
     compileSdk appAndroidCompileSDK
@@ -31,20 +23,8 @@ android {
         targetSdkVersion appAndroidTargetSDK
     }
 
-    signingConfigs {
-        manosaba {
-            if (manosabaKeyFile.exists()) {
-                storeFile rootProject.file(manosabaKey['storeFile'])
-                storePassword manosabaKey['storePassword']
-                keyAlias manosabaKey['keyAlias']
-                keyPassword manosabaKey['keyPassword']
-            }
-        }
-    }
-
     buildTypes {
         debug {
-            if (manosabaKeyFile.exists()) signingConfig signingConfigs.manosaba //[Manosaba]
             applicationIdSuffix ".indev"
             versionNameSuffix '-INDEV'
             dependencies {
@@ -53,7 +33,6 @@ android {
             }
         }
         release {
-            if (manosabaKeyFile.exists()) signingConfig signingConfigs.manosaba //[Manosaba]
 
             //These lines enable R8, which is a code shrinker/optimizer/obfuscator.
             //This makes release APKs smaller and more efficient, but also makes debugging trickier
