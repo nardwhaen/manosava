@@ -430,7 +430,7 @@ public class Hero extends Char {
 	}
 	
 	public String className() {
-		return heroClass.title(); //[Manosaba] 보조직업을 골라도 캐릭터 이름만 표시
+		return subClass == null || subClass == HeroSubClass.NONE ? heroClass.title() : subClass.title();
 	}
 
 	@Override

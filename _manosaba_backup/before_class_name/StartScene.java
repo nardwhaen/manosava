@@ -215,7 +215,7 @@ public class StartScene extends PixelScene {
 				}
 			} else {
 				
-				if (false && info.subClass != HeroSubClass.NONE){ //[Manosaba] 항상 캐릭터 이름
+				if (info.subClass != HeroSubClass.NONE){
 					name.text(Messages.titleCase(info.subClass.title()));
 				} else {
 					name.text(Messages.titleCase(info.heroClass.title()));

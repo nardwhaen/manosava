@@ -54,7 +54,7 @@ public class WndGameInProgress extends Window {
 		final GamesInProgress.Info info = GamesInProgress.check(slot);
 		
 		String className = null;
-		if (false && info.subClass != HeroSubClass.NONE){ //[Manosaba] 항상 캐릭터 이름
+		if (info.subClass != HeroSubClass.NONE){
 			className = info.subClass.title();
 		} else {
 			className = info.heroClass.title();
