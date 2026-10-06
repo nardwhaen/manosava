@@ -125,6 +125,12 @@ public class Sherry {
 	// ===== 고장 난 위기 경보기 =====
 
 	//점성 마법부여처럼 받는 피해의 일부를 지연 피해로 바꾸는 비율 (+1: 20%, +2: 35%)
+	//[Manosaba] 마녀화 중이면 지연되지 않은 피해에 적용되는 30% 감소를 계산 (Hero.damage와 같은 반올림)
+	public static int witchReduced( Hero hero, int dmg ){
+		if (hero != null && hero.buff(WitchForm.class) != null) return Math.round(dmg * 0.7f);
+		return dmg;
+	}
+
 	public static float alarmPercent( Hero hero ){
 		if (!hero.hasTalent(Talent.BROKEN_ALARM)) return 0f;
 		if (hero.buff(Talent.WarriorFoodImmunity.class) != null) return 0f; //식사 중 피해 면역은 건너뜀

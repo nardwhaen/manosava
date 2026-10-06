@@ -1728,7 +1728,7 @@ public class Hero extends Char {
 		if (!(src instanceof SherryDeferredDamage) && dmg > 0){
 			//받는 피해의 일부를 지연 피해로 (점성 마법부여와 같은 방식, 마녀화 감소는 틱이 들어올 때 적용)
 			float alarm = Sherry.alarmPercent(this);
-			if (alarm > 0 && !(src instanceof Hunger)){ //[Manosaba] 배고픔 피해는 지연시키지 않음
+			if (alarm > 0){
 				int deferred = (int)Math.ceil(dmg * alarm);
 				Buff.affect(this, SherryDeferredDamage.class).extend(deferred);
 				dmg -= deferred;

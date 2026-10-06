@@ -43,8 +43,6 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.sherry.Sherry;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.sherry.WitchForm;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
@@ -81,17 +79,12 @@ public class ChaliceOfBlood extends Artifact {
 			int minDmg = minPrickDmg();
 			int maxDmg = maxPrickDmg();
 
-			//[Manosaba] 셰리 마녀화의 피해 감소(30%)를 사망 확률 계산에 반영
-			boolean witch = hero.buff(WitchForm.class) != null;
-			int calcMin = Sherry.witchReduced(hero, minDmg);
-			int calcMax = Sherry.witchReduced(hero, maxDmg);
-
 			int totalHeroHP = hero.HP + hero.shielding();
 
 			float deathChance = 0;
 
-			if (totalHeroHP < calcMax) {
-				deathChance = (calcMax - totalHeroHP) / (float) Math.max(1, calcMax - calcMin);
+			if (totalHeroHP < maxDmg) {
+				deathChance = (maxDmg - totalHeroHP) / (float) (maxDmg - minDmg);
 				if (deathChance < 0.5f) {
 					deathChance = (float) Math.pow(2 * deathChance, 2) / 2f;
 				} else if (deathChance < 1f) {
@@ -106,7 +99,7 @@ public class ChaliceOfBlood extends Artifact {
 			GameScene.show(
 				new WndOptions(new ItemSprite(this),
 						Messages.titleCase(name()),
-						Messages.get(this, witch ? "prick_warn_witch" : "prick_warn", minDmg, maxDmg, Messages.decimalFormat("#.##", 100*deathChance)),
+						Messages.get(this, "prick_warn", minDmg, maxDmg, Messages.decimalFormat("#.##", 100*deathChance)),
 						Messages.get(this, "yes"),
 						Messages.get(this, "no")) {
 					@Override
