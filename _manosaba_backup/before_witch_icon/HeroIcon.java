@@ -50,7 +50,6 @@ public class HeroIcon extends Image {
 	public static final int MONK        = 9;
 	public static final int PRIEST      = 10;
 	public static final int PALADIN     = 11;
-	public static final int SHERRY_WITCH = 12; //[Manosaba] 셰리 마녀화 눈
 
 	//abilities
 	public static final int HEROIC_LEAP     = 16;
