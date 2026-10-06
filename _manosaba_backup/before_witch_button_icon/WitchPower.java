@@ -123,7 +123,7 @@ public class WitchPower extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public int actionIcon() {
-		return HeroIcon.SHERRY_WITCH; //[Manosaba] 마녀화 버튼: 마녀화한 셰리의 눈 (보조직업 아이콘과 같은 그림)
+		return HeroIcon.BERSERK; //TODO 전용 아이콘
 	}
 
 	@Override
