@@ -22,9 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.hero.sherry;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
@@ -68,15 +65,6 @@ public class WitchForm extends Buff {
 		super.detach();
 		if (target != null && target.buff(WitchPower.class) != null){
 			target.buff(WitchPower.class).gain(0, true); //행동 버튼 갱신
-		}
-	}
-
-	//[Manosaba] 마녀화 중에는 마녀화 스프라이트와 초상화로 바꿈
-	@Override
-	public void fx( boolean on ) {
-		if (target instanceof Hero && target.sprite instanceof HeroSprite){
-			((HeroSprite) target.sprite).refreshSheet();
-			GameScene.updateAvatar();
 		}
 	}
 

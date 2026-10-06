@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.HeroDisguise;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.sherry.WitchForm;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
@@ -63,27 +62,6 @@ public class HeroSprite extends CharSprite {
 	}
 
 	private HeroClass sheetClass;
-
-	//[Manosaba] 실제로 쓸 시트: 셰리가 마녀화 중이면 마녀화 시트 (변장 중에는 변장한 직업 그대로)
-	public static Object sheetOf( Hero hero, HeroClass cls ){
-		if (cls == HeroClass.WARRIOR && hero != null && hero.heroClass == HeroClass.WARRIOR
-				&& hero.buff(HeroDisguise.class) == null && hero.buff(WitchForm.class) != null){
-			return Assets.Sprites.SHERRY_WITCH;
-		}
-		return cls.spritesheet();
-	}
-
-	//[Manosaba] 마녀화가 켜지거나 꺼질 때 그림만 바꿈.
-	//두 시트는 크기와 프레임 배치가 같아서 재생 중인 동작(공격 등)은 끊지 않고 그대로 이어짐
-	public void refreshSheet(){
-		if (!singleRow(sheetClass)) return;
-		texture( sheetOf( Dungeon.hero, sheetClass ) );
-		if (curAnim != null && curFrame < curAnim.frames.length){
-			frame( curAnim.frames[curFrame] );
-		} else {
-			updateArmor();
-		}
-	}
 	
 	private Animation fly;
 	private Animation read;
@@ -92,7 +70,7 @@ public class HeroSprite extends CharSprite {
 		super();
 		
 		sheetClass = Dungeon.hero.heroClass;
-		texture( sheetOf( Dungeon.hero, Dungeon.hero.heroClass ) ); //[Manosaba]
+		texture( Dungeon.hero.heroClass.spritesheet() );
 		updateArmor();
 		
 		link( Dungeon.hero );
@@ -105,7 +83,7 @@ public class HeroSprite extends CharSprite {
 
 	public void disguise(HeroClass cls){
 		sheetClass = cls;
-		texture( sheetOf( Dungeon.hero, cls ) ); //[Manosaba]
+		texture( cls.spritesheet() );
 		updateArmor();
 	}
 	
@@ -223,11 +201,6 @@ public class HeroSprite extends CharSprite {
 	public static Image avatar( Hero hero ){
 		if (hero.buff(HeroDisguise.class) != null){
 			return avatar(hero.buff(HeroDisguise.class).getDisguise(), hero.tier());
-		} else if (hero.heroClass == HeroClass.WARRIOR && hero.buff(WitchForm.class) != null){
-			//[Manosaba] 마녀화 중인 셰리 초상화
-			Image avatar = new Image( Assets.Sprites.SHERRY_WITCH );
-			avatar.frame( avatar.texture.uvRect( 1, 0, FRAME_WIDTH, SINGLE_ROW_HEIGHT ) );
-			return avatar;
 		} else {
 			return avatar(hero.heroClass, hero.tier());
 		}

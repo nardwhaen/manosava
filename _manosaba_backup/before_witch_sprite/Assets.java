@@ -272,7 +272,6 @@ public class Assets {
 
 		public static final String WARRIOR  = "sprites/warrior.png";
 		public static final String SHERRY   = "sprites/sherry.png"; //[Manosaba] 셰리 (12x17, 한 줄)
-		public static final String SHERRY_WITCH = "sprites/sherry_witch.png"; //[Manosaba] 마녀화한 셰리 (배치는 셰리 시트와 같음)
 		public static final String MAGE     = "sprites/mage.png";
 		public static final String ROGUE    = "sprites/rogue.png";
 		public static final String HUNTRESS = "sprites/huntress.png";
