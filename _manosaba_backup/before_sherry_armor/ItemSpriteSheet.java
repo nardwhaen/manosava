@@ -389,7 +389,7 @@ public class ItemSpriteSheet {
 		assignItemRect(ARMOR_MAIL,      14, 12);
 		assignItemRect(ARMOR_SCALE,     14, 11);
 		assignItemRect(ARMOR_PLATE,     12, 12);
-		assignItemRect(ARMOR_WARRIOR,   15, 15); //[Manosaba] 셰리 직업 갑옷 (원본 12x12)
+		assignItemRect(ARMOR_WARRIOR,   12, 12);
 		assignItemRect(ARMOR_MAGE,      15, 15);
 		assignItemRect(ARMOR_ROGUE,     14, 12);
 		assignItemRect(ARMOR_HUNTRESS,  13, 15);
