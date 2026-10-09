@@ -147,10 +147,13 @@ public class WitchPower extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public int icon() {
-		return target.buff(WitchForm.class) == null ? BuffIndicator.WITCH_METER : BuffIndicator.NONE; //[Manosaba] 금 간 하트
+		return target.buff(WitchForm.class) == null ? BuffIndicator.RAGE : BuffIndicator.NONE; //TODO 전용 아이콘
 	}
 
-	//[Manosaba] 전용 아이콘은 색을 직접 칠했으므로 tintIcon을 쓰지 않음
+	@Override
+	public void tintIcon(Image icon) {
+		icon.hardlight(0.7f, 0.2f, 1f);
+	}
 
 	@Override
 	public float iconFadePercent() {
