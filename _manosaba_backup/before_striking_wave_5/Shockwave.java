@@ -130,9 +130,9 @@ public class Shockwave extends ArmorAbility {
 									if (hero.subClass == HeroSubClass.GLADIATOR && wasEnemy){
 										Buff.affect( hero, Combo.class ).hit( ch );
 									}
-									//[Manosaba] 마법의 힘: 적중한 적 1체당 서브클래스 수치 +5 (지속 중에도 쌓임)
+									//[Manosaba] 마법의 힘: 적중한 적 1체당 서브클래스 수치 +1 (지속 중에도 쌓임)
 									if (wasEnemy){
-										com.shatteredpixel.shatteredpixeldungeon.actors.hero.sherry.Sherry.addSubclassMeter(hero, 5, true);
+										com.shatteredpixel.shatteredpixeldungeon.actors.hero.sherry.Sherry.addSubclassMeter(hero, 1, true);
 									}
 								} else {
 									ch.damage(damage, hero);
