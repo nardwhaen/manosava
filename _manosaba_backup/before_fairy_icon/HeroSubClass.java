@@ -50,8 +50,8 @@ public enum HeroSubClass {
 	PRIEST(HeroIcon.PRIEST),
 	PALADIN(HeroIcon.PALADIN),
 
-	//[Manosaba] 타치바나 셰리 서브클래스
-	SHERRY_FAIRY(HeroIcon.SHERRY_FAIRY),  //요정님이에요!
+	//[Manosaba] 타치바나 셰리 서브클래스 (요정님 아이콘은 검투사 것을 임시로 사용)
+	SHERRY_FAIRY(HeroIcon.GLADIATOR),  //요정님이에요!
 	SHERRY_WITCH(HeroIcon.SHERRY_WITCH);  //마녀화라는 건 [이런] 거군요.
 
 	int icon;
