@@ -130,7 +130,7 @@ public class Flutter extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public int actionIcon() {
-		return HeroIcon.SHERRY_FAIRY; //[Manosaba] 요정이에요! 버튼: 요정 보조직업 아이콘과 같은 그림
+		return HeroIcon.GLADIATOR; //TODO 전용 아이콘
 	}
 
 	@Override
