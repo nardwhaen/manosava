@@ -711,10 +711,10 @@ public class Hero extends Char {
 		}
 
 		//[Manosaba] 마녀화라는 건 [이런] 거군요.: 근접 공격 시 현재 힘 비례 추가 피해
-		//(힘-10) ~ (힘-10) + ((힘-10) + 레벨)/2 (소수점 올림), 공격 피해에 더해지므로 방어력에 감소됨
+		//(힘-10) ~ (힘-10) + ((힘-10) + 레벨)/2, 공격 피해에 더해지므로 방어력에 감소됨
 		if (subClass == HeroSubClass.SHERRY_WITCH && !(wep instanceof MissileWeapon)){
 			int str = Math.max(0, STR() - 10);
-			dmg += heroDamageIntRange( str, str + (str + lvl + 1)/2 );
+			dmg += heroDamageIntRange( str, str + (str + lvl)/2 );
 		}
 
 		PhysicalEmpower emp = buff(PhysicalEmpower.class);
