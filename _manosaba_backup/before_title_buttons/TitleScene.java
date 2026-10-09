@@ -43,7 +43,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
-import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndSettings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndVictoryCongrats;
 import com.watabou.glwrap.Blending;
@@ -172,9 +171,8 @@ public class TitleScene extends PixelScene {
 		btnPlay.icon(Icons.get(Icons.ENTER));
 		add(btnPlay);
 
-		//[Manosaba] '게임을 지원하기' 버튼은 만들기만 하고 화면에 넣지 않음 (원본 후원 페이지 연결 방지)
-		btnSupport = new StyledButton(GREY_TR, Messages.get(this, "support"));
-		btnSupport.visible = btnSupport.active = false;
+		btnSupport = new SupportButton(GREY_TR, Messages.get(this, "support"));
+		add(btnSupport);
 
 		btnRankings = new StyledButton(GREY_TR,Messages.get(this, "rankings")){
 			@Override
@@ -195,9 +193,9 @@ public class TitleScene extends PixelScene {
 		btnJournal.icon(Icons.get(Icons.JOURNAL));
 		add(btnJournal);
 
-		//[Manosaba] '새 소식'은 원본 개발자 소식이라 버튼을 화면에 넣지 않음 (소식 확인 통신도 하지 않음)
-		btnNews = new StyledButton(GREY_TR, Messages.get(this, "news"));
-		btnNews.visible = btnNews.active = false;
+		btnNews = new NewsButton(GREY_TR, Messages.get(this, "news"));
+		btnNews.icon(Icons.get(Icons.NEWS));
+		add(btnNews);
 
 		btnChanges = new ChangesButton(GREY_TR, Messages.get(this, "changes"));
 		btnChanges.icon(Icons.get(Icons.CHANGES));
@@ -222,25 +220,26 @@ public class TitleScene extends PixelScene {
 
 		float buttonAreaWidth = landscape() ? PixelScene.MIN_WIDTH_L-6 : PixelScene.MIN_WIDTH_P-2;
 		float btnAreaLeft = insets.left + (w - buttonAreaWidth) / 2f;
-		//[Manosaba] 지원하기·새 소식을 뺀 배치
 		if (landscape()) {
-			//시작 / 랭킹·일지·변경 / 설정·소개
-			btnPlay.setRect(btnAreaLeft, insets.top + topRegion+GAP, buttonAreaWidth, BTN_HEIGHT);
+			btnPlay.setRect(btnAreaLeft, insets.top + topRegion+GAP, (buttonAreaWidth/2)-1, BTN_HEIGHT);
 			align(btnPlay);
+			btnSupport.setRect(btnPlay.right()+2, btnPlay.top(), btnPlay.width(), BTN_HEIGHT);
 			btnRankings.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, (float) (Math.floor(buttonAreaWidth/3f)-1), BTN_HEIGHT);
 			btnJournal.setRect(btnRankings.right()+2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
-			btnChanges.setRect(btnJournal.right()+2, btnJournal.top(), btnRankings.width(), BTN_HEIGHT);
-			btnSettings.setRect(btnRankings.left(), btnRankings.bottom() + GAP, (buttonAreaWidth/2)-1, BTN_HEIGHT);
-			btnAbout.setRect(btnSettings.right()+2, btnSettings.top(), btnSettings.width(), BTN_HEIGHT);
+			btnNews.setRect(btnJournal.right()+2, btnJournal.top(), btnRankings.width(), BTN_HEIGHT);
+			btnSettings.setRect(btnRankings.left(), btnRankings.bottom() + GAP, btnRankings.width(), BTN_HEIGHT);
+			btnChanges.setRect(btnSettings.right()+2, btnSettings.top(), btnRankings.width(), BTN_HEIGHT);
+			btnAbout.setRect(btnChanges.right()+2, btnSettings.top(), btnRankings.width(), BTN_HEIGHT);
 		} else {
-			//시작 / 랭킹·일지 / 변경·설정 / 소개
 			btnPlay.setRect(btnAreaLeft, insets.top + topRegion+GAP, buttonAreaWidth, BTN_HEIGHT);
 			align(btnPlay);
-			btnRankings.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, (btnPlay.width()/2)-1, BTN_HEIGHT);
+			btnSupport.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, btnPlay.width(), BTN_HEIGHT);
+			btnRankings.setRect(btnPlay.left(), btnSupport.bottom()+ GAP, (btnPlay.width()/2)-1, BTN_HEIGHT);
 			btnJournal.setRect(btnRankings.right()+2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
-			btnChanges.setRect(btnRankings.left(), btnRankings.bottom()+ GAP, btnRankings.width(), BTN_HEIGHT);
-			btnSettings.setRect(btnChanges.right()+2, btnChanges.top(), btnRankings.width(), BTN_HEIGHT);
-			btnAbout.setRect(btnPlay.left(), btnChanges.bottom()+GAP, btnPlay.width(), BTN_HEIGHT);
+			btnNews.setRect(btnRankings.left(), btnRankings.bottom()+ GAP, btnRankings.width(), BTN_HEIGHT);
+			btnChanges.setRect(btnNews.right()+2, btnNews.top(), btnNews.width(), BTN_HEIGHT);
+			btnSettings.setRect(btnNews.left(), btnNews.bottom()+GAP, btnRankings.width(), BTN_HEIGHT);
+			btnAbout.setRect(btnSettings.right()+2, btnSettings.top(), btnSettings.width(), BTN_HEIGHT);
 		}
 
 		version = new BitmapText( "v" + Game.version, pixelFont);
@@ -396,20 +395,27 @@ public class TitleScene extends PixelScene {
 
 		public ChangesButton( Chrome.Type type, String label ){
 			super(type, label);
-			//[Manosaba] 원본 업데이트 확인은 하지 않음
+			if (SPDSettings.updates()) Updates.checkForUpdate();
+		}
+
+		boolean updateShown = false;
+
+		@Override
+		public void update() {
+			super.update();
+
+			if (!updateShown && Updates.updateAvailable()){
+				updateShown = true;
+				text(Messages.get(TitleScene.class, "update"));
+			}
+
+			if (updateShown){
+				textColor(ColorMath.interpolate( 0xFFFFFF, Window.SHPX_COLOR, 0.5f + (float)Math.sin(Game.timeTotal*5)/2f));
+			}
 		}
 
 		@Override
 		protected void onClick() {
-			//[Manosaba] 원본 변경 사항 화면 대신 모드의 최근 업데이트 내역만 글로 보여줌
-			ShatteredPixelDungeon.scene().addToFront( new WndTitledMessage(
-					Icons.get(Icons.CHANGES),
-					Messages.get(this, "mod_title"),
-					Messages.get(this, "mod_desc")));
-		}
-
-		@SuppressWarnings("unused")
-		protected void onClickOriginal() {
 			if (Updates.updateAvailable()){
 				AvailableUpdateData update = Updates.updateData();
 
