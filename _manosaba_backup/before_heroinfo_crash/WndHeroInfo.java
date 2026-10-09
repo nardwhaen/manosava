@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.TalentIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TalentsPane;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -175,10 +174,8 @@ public class WndHeroInfo extends WndTabbed {
 
 			switch (cls){
 				case WARRIOR: default:
-					//[Manosaba] 셰리: 힘 비례 추가 피해 문단용 아이콘(괴력의 마법) 추가
 					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.SEAL),
 							new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD),
-							new TalentIcon(Talent.STRONGMAN),
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
 				case MAGE:
@@ -211,9 +208,8 @@ public class WndHeroInfo extends WndTabbed {
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
 			}
-			//[Manosaba] 문단 수보다 많은 아이콘은 표시하지 않음 (언어마다 문단 수가 다를 수 있음)
-			for (int i = 0; i < icons.length && i < info.length; i++) {
-				add(icons[i]);
+			for (Image im : icons) {
+				add(im);
 			}
 
 		}
@@ -230,12 +226,9 @@ public class WndHeroInfo extends WndTabbed {
 				info[i].maxWidth((int)width - 20);
 				info[i].setPos(20, pos);
 
-				//[Manosaba] 설명 문단이 아이콘보다 많아도 튕기지 않게
-				if (i < icons.length) {
-					icons[i].x = (20 - icons[i].width()) / 2;
-					icons[i].y = info[i].top() + (info[i].height() - icons[i].height()) / 2;
-					PixelScene.align(icons[i]);
-				}
+				icons[i].x = (20-icons[i].width())/2;
+				icons[i].y = info[i].top() + (info[i].height() - icons[i].height())/2;
+				PixelScene.align(icons[i]);
 
 				pos = info[i].bottom() + 4*MARGIN;
 			}
