@@ -44,11 +44,6 @@ public class IconTitle extends Component {
 
 	private float healthLvl = Float.NaN;
 
-	//[Manosaba] 띄어쓰기 없는 긴 제목이 칸을 넘을 때 글씨 크기를 줄이기 위해 기억해 둠
-	private String labelText = "";
-	private int labelColor = Window.TITLE_COLOR;
-	private int labelSize = (int)FONT_SIZE;
-
 	public IconTitle() {
 		super();
 	}
@@ -101,15 +96,7 @@ public class IconTitle extends Component {
 		int imWidth = (int)Math.max(imIcon.width(), 16);
 		int imHeight = (int)Math.max(imIcon.height(), 16);
 
-		int maxW = (int)(width - (imWidth + GAP));
-		//[Manosaba] 한 덩어리 제목(예: 셰리짱귀여워사랑해잘했어대단해천재야!)이 칸을 넘으면
-		//줄이 넘어가거나 잘리는 대신 글씨를 최소 6까지 줄임
-		if (labelSize != (int)FONT_SIZE) setLabelSize((int)FONT_SIZE);
-		tfLabel.maxWidth(maxW);
-		while (maxW > 0 && tfLabel.width() > maxW && labelSize > 6){
-			setLabelSize(labelSize - 1);
-			tfLabel.maxWidth(maxW);
-		}
+		tfLabel.maxWidth((int)(width - (imWidth + GAP)));
 		tfLabel.setPos(x + imWidth + GAP,
 						imHeight > tfLabel.height() ? y +(imHeight - tfLabel.height()) / 2 : y);
 		PixelScene.align(tfLabel);
@@ -134,32 +121,16 @@ public class IconTitle extends Component {
 	}
 
 	public void label( String label ) {
-		labelText = label;
 		tfLabel.text( label );
 	}
 
 	public void label( String label, int color ) {
-		labelText = label;
-		labelColor = color;
 		tfLabel.text( label );
 		tfLabel.hardlight( color );
 	}
 
 	public void color( int color ) {
-		labelColor = color;
 		tfLabel.hardlight( color );
-	}
-
-	//[Manosaba] 같은 내용·색으로 글씨 크기만 바꾼 제목으로 교체
-	private void setLabelSize( int size ){
-		RenderedTextBlock old = tfLabel;
-		tfLabel = PixelScene.renderTextBlock( size );
-		tfLabel.hardlight( labelColor );
-		tfLabel.setHightlighting( false );
-		tfLabel.text( labelText );
-		replace( old, tfLabel );
-		old.destroy();
-		labelSize = size;
 	}
 
 	public float alpha(){
