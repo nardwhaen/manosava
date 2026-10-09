@@ -103,10 +103,10 @@ public class IconTitle extends Component {
 
 		int maxW = (int)(width - (imWidth + GAP));
 		//[Manosaba] 한 덩어리 제목(예: 셰리짱귀여워사랑해잘했어대단해천재야!)이 칸을 넘으면
-		//줄이 넘어가거나 잘리는 대신 글씨를 최소 5까지 줄임
+		//줄이 넘어가거나 잘리는 대신 글씨를 최소 6까지 줄임
 		if (labelSize != (int)FONT_SIZE) setLabelSize((int)FONT_SIZE);
 		tfLabel.maxWidth(maxW);
-		while (maxW > 0 && tfLabel.width() > maxW && labelSize > 5){
+		while (maxW > 0 && tfLabel.width() > maxW && labelSize > 6){
 			setLabelSize(labelSize - 1);
 			tfLabel.maxWidth(maxW);
 		}
