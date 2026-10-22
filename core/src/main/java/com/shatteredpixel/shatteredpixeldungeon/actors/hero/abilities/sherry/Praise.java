@@ -42,6 +42,10 @@ public class Praise extends ArmorAbility {
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
 
+		//[Manosaba] 투명화 해제는 시간 방울을 주기 전에 먼저 함
+		//(Invisibility.dispel()이 시간 방울도 같이 없애서, 나중에 부르면 칭찬받았어요!가 바로 사라졌음)
+		Invisibility.dispel();
+
 		//한나 씨의 칭찬: 20턴 → 25/30/35/40턴
 		float duration = 20f + 5f*hero.pointsInTalent(Talent.HANNA_PRAISE);
 		Buff.prolong(hero, Adrenaline.class, duration);
@@ -63,7 +67,6 @@ public class Praise extends ArmorAbility {
 
 		armor.charge -= chargeUse(hero);
 		armor.updateQuickslot();
-		Invisibility.dispel();
 		hero.spendAndNext(1f);
 	}
 
