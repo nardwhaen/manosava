@@ -482,7 +482,18 @@ public enum Talent {
 		this.maxPoints = maxPoints;
 	}
 
+	//[Manosaba] 노아가 원본 특성을 그대로 쓰는 경우 이름·설명·아이콘만 노아 것으로 보여 줌
+	//(도둑의 직감 -> 호기심 많은 아이, 신비한 식사 -> 와, 밥이다!)
+	private boolean noaVersion(){
+		if (this != THIEFS_INTUITION && this != MYSTICAL_MEAL) return false;
+		HeroClass cls = Dungeon.hero != null ? Dungeon.hero.heroClass : GamesInProgress.selectedClass;
+		return cls == HeroClass.MAGE;
+	}
+
 	public int icon(){
+		if (noaVersion()){ //[Manosaba] 마법사 특성 아이콘을 임시로 사용
+			return this == THIEFS_INTUITION ? 33 : 36;
+		}
 		if (this == HEROIC_ENERGY){
 			if (Ratmogrify.useRatroicEnergy){
 				return 218;
@@ -515,6 +526,9 @@ public enum Talent {
 		if (this == HEROIC_ENERGY && Ratmogrify.useRatroicEnergy){
 			return Messages.get(this, name() + ".rat_title");
 		}
+		if (noaVersion()){ //[Manosaba]
+			return Messages.get(this, name() + ".noa_title");
+		}
 		return Messages.get(this, name() + ".title");
 	}
 
@@ -523,6 +537,9 @@ public enum Talent {
 	}
 
 	public String desc(boolean metamorphed){
+		if (noaVersion()){ //[Manosaba]
+			return Messages.get(this, name() + ".noa_desc");
+		}
 		if (metamorphed){
 			String metaDesc = Messages.get(this, name() + ".meta_desc");
 			if (!metaDesc.equals(Messages.NO_TEXT_FOUND)){
