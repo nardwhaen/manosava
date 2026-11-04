@@ -51,7 +51,7 @@ public class HeroSprite extends CharSprite {
 	public static final int SINGLE_ROW_HEIGHT = 17;
 
 	public static boolean singleRow( HeroClass cls ){
-		return cls == HeroClass.WARRIOR; //셰리
+		return cls == HeroClass.WARRIOR || cls == HeroClass.MAGE; //셰리, 노아
 	}
 
 	//영웅 선택 화면, 저장 슬롯 등에 쓰는 정지 그림

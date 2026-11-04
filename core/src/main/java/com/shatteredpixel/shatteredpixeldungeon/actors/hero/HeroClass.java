@@ -94,7 +94,8 @@ public enum HeroClass {
 
 	//[Manosaba] 원본 전사 자리를 타치바나 셰리가 대체함 (내부 이름은 WARRIOR 그대로, 스프라이트도 전사 것을 임시로 사용)
 	WARRIOR( HeroSubClass.SHERRY_FAIRY, HeroSubClass.SHERRY_WITCH ),
-	MAGE( HeroSubClass.BATTLEMAGE, HeroSubClass.WARLOCK ),
+	//[Manosaba] 원본 마법사 자리를 죠가사키 노아가 대체함 (내부 이름은 MAGE 그대로)
+	MAGE( HeroSubClass.NOA_GARDEN, HeroSubClass.NOA_WITCH ),
 	ROGUE( HeroSubClass.ASSASSIN, HeroSubClass.FREERUNNER ),
 	HUNTRESS( HeroSubClass.SNIPER, HeroSubClass.WARDEN ),
 	DUELIST( HeroSubClass.CHAMPION, HeroSubClass.MONK ),
@@ -218,18 +219,26 @@ public enum HeroClass {
 		new ChaliceOfBlood().identify().collect();                    //피의 성배
 	}
 
+	//[Manosaba] 죠가사키 노아 시작 장비: 낡은 소검, 투척용 돌 3개, 페인트 통
 	private static void initMage( Hero hero ) {
-		MagesStaff staff;
+		(hero.belongings.weapon = new WornShortsword()).identify();
 
-		staff = new MagesStaff(new WandOfMagicMissile());
+		com.shatteredpixel.shatteredpixeldungeon.items.artifacts.PaintCan can =
+				new com.shatteredpixel.shatteredpixeldungeon.items.artifacts.PaintCan();
+		(hero.belongings.artifact = can).identify();
+		hero.belongings.artifact.activate( hero );
 
-		(hero.belongings.weapon = staff).identify();
-		hero.belongings.weapon.activate(hero);
+		ThrowingStone stones = new ThrowingStone();
+		stones.quantity(3).identify().collect();
 
-		Dungeon.quickslot.setSlot(0, staff);
+		Dungeon.quickslot.setSlot(0, can);
+		Dungeon.quickslot.setSlot(1, stones);
 
-		new ScrollOfUpgrade().identify();
-		new PotionOfLiquidFlame().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging().identify();
+		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation().identify();
+
+		//[Manosaba] 테스트용 시드 (셰리와 같은 SHERRYTEST)
+		if (isSherryTestSeed()) giveSherryTestItems();
 	}
 
 	private static void initRogue( Hero hero ) {
@@ -319,7 +328,10 @@ public enum HeroClass {
 			case WARRIOR: default:
 				return new ArmorAbility[]{new Praise(), new Shockwave(), new Culprit()};
 			case MAGE:
-				return new ArmorAbility[]{new ElementalBlast(), new WildMagic(), new WarpBeacon()};
+				//[Manosaba] 노아: 노아의 아틀리에!, 물거품이 되어, 드리핑
+				return new ArmorAbility[]{new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.noa.NoaAtelier(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.noa.BubbleForm(),
+						new com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.noa.Dripping()};
 			case ROGUE:
 				return new ArmorAbility[]{new SmokeBomb(), new DeathMark(), new ShadowClone()};
 			case HUNTRESS:
@@ -336,7 +348,7 @@ public enum HeroClass {
 			case WARRIOR: default:
 				return Assets.Sprites.SHERRY; //[Manosaba] 셰리 전용 스프라이트
 			case MAGE:
-				return Assets.Sprites.MAGE;
+				return Assets.Sprites.NOA; //[Manosaba] 노아 전용 스프라이트
 			case ROGUE:
 				return Assets.Sprites.ROGUE;
 			case HUNTRESS:
@@ -367,7 +379,7 @@ public enum HeroClass {
 	
 	//[Manosaba] 영웅 선택 화면에 나오는 직업. 원본 직업은 코드만 남기고 선택 화면에서 뺌
 	public boolean isSelectable(){
-		return this == WARRIOR;
+		return this == WARRIOR || this == MAGE; //[Manosaba] 셰리, 노아
 	}
 
 	public boolean isUnlocked(){

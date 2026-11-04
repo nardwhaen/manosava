@@ -139,7 +139,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 
 		Badges.validateItemLevelAquired( item );
 		Statistics.upgradesUsed++;
-		Badges.validateMageUnlock();
+		//[Manosaba] 노아 해금 조건이 물 혼합물 제작으로 바뀌어 여기서는 확인하지 않음
 
 		Catalog.countUse(item.getClass());
 

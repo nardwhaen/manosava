@@ -52,7 +52,11 @@ public enum HeroSubClass {
 
 	//[Manosaba] 타치바나 셰리 서브클래스
 	SHERRY_FAIRY(HeroIcon.SHERRY_FAIRY),  //요정님이에요!
-	SHERRY_WITCH(HeroIcon.SHERRY_WITCH);  //마녀화라는 건 [이런] 거군요.
+	SHERRY_WITCH(HeroIcon.SHERRY_WITCH),  //마녀화라는 건 [이런] 거군요.
+
+	//[Manosaba] 죠가사키 노아 서브클래스 (아이콘은 원본 워든·흑마법사 것을 임시로 사용)
+	NOA_GARDEN(HeroIcon.WARDEN),          //환상의 정원
+	NOA_WITCH(HeroIcon.WARLOCK);          //마녀화: 액체 조종 마법
 
 	int icon;
 

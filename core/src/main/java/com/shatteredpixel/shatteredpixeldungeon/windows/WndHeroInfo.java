@@ -62,8 +62,8 @@ public class WndHeroInfo extends WndTabbed {
 			case WARRIOR: default:
 				tabIcon = new ItemSprite(ItemSpriteSheet.SEAL, null);
 				break;
-			case MAGE:
-				tabIcon = new ItemSprite(ItemSpriteSheet.MAGES_STAFF, null);
+			case MAGE: //[Manosaba] 노아: 페인트 통
+				tabIcon = new ItemSprite(ItemSpriteSheet.BREW_AQUA, null);
 				break;
 			case ROGUE:
 				tabIcon = new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK, null);
@@ -181,9 +181,10 @@ public class WndHeroInfo extends WndTabbed {
 							new TalentIcon(Talent.STRONGMAN),
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
-				case MAGE:
-					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.MAGES_STAFF),
-							new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE),
+				case MAGE: //[Manosaba] 노아: 페인트 통, 시작 장비, 마녀 인자, 감정
+					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.BREW_AQUA),
+							new ItemSprite(ItemSpriteSheet.WORN_SHORTSWORD),
+							new TalentIcon(Talent.BLACK_TEARS),
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
 				case ROGUE:

@@ -992,6 +992,8 @@ public abstract class Mob extends Char {
 
 		//[Manosaba] 셰리: 범인 사망, 마녀화 연장, 더 칭찬해 주세요!
 		com.shatteredpixel.shatteredpixeldungeon.actors.hero.sherry.Sherry.onMobDeath(this, cause);
+		//[Manosaba] 노아: 소환물 사망 (다시 그려야 겠다~)
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.Noa.onMobDeath(this, cause);
 
 		if (alignment == Alignment.ENEMY){
 			if (buff(Trap.HazardAssistTracker.class) != null){

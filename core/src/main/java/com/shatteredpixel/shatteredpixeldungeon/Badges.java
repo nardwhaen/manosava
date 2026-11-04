@@ -965,9 +965,9 @@ public class Badges {
 		unlock(Badge.FOUND_RATMOGRIFY);
 	}
 	
+	//[Manosaba] 마법사 자리 = 죠가사키 노아. 연금술 솥에서 물 혼합물을 만들면 해금 (AlchemyScene에서 호출)
 	public static void validateMageUnlock(){
-		if (true) return; //[Manosaba] 기본 캐릭터 해금 비활성화
-		if (Statistics.upgradesUsed >= 1 && !isUnlocked(Badge.UNLOCK_MAGE)){
+		if (!isUnlocked(Badge.UNLOCK_MAGE)){
 			displayBadge( Badge.UNLOCK_MAGE );
 		}
 	}

@@ -234,6 +234,11 @@ abstract public class MissileWeapon extends Weapon {
 
 	@Override
 	public void doThrow(Hero hero) {
+		//[Manosaba] 물거품이 되어: 사용 중에는 투척 무기 불가 (노아도 싸울 수 있어~ 제외)
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.Noa.attackBlocked(hero)){
+			GLog.w( Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.noa.BubbleForm.class, "no_attack") );
+			return;
+		}
 		parent = null; //reset parent before throwing, just in case
 		if (((levelKnown && level() > 0) || hasGoodEnchant() || masteryPotionBonus || enchantHardened)
 				&& !extraThrownLeft && quantity() == 1 && durabilityLeft() <= durabilityPerUse()){

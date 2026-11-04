@@ -763,6 +763,10 @@ public class AlchemyScene extends PixelScene {
 
 		Statistics.itemsCrafted++;
 		Badges.validateItemsCrafted();
+		//[Manosaba] 연금술 솥에서 물 혼합물(물 폭탄)을 만들면 죠가사키 노아 해금
+		if (result instanceof com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.AquaBrew){
+			Badges.validateMageUnlock();
+		}
 
 		saveNeeded = false;
 		try {

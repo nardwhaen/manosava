@@ -131,6 +131,25 @@ public enum Talent {
 	//범인은 당신이에요! T4: 명탐정의 추리, 당신도 공범인가요?, 어라라? 아니었나 봐요!
 	GREAT_DETECTIVE(84, 4), ACCOMPLICE(85, 4), OOPS_WRONG(86, 4),
 
+	//[Manosaba] 죠가사키 노아 전용 특성 (원본 마법사 자리, 아이콘은 마법사 특성 아이콘을 임시로 사용)
+	//효과가 원본과 같은 특성은 원본을 그대로 씀: 호기심 많은 아이=THIEFS_INTUITION, 와, 밥이다!=MYSTICAL_MEAL, 마법의 갑옷=HEROIC_ENERGY
+	//Noa T1: 감옥 식사, 달라붙는 페인트, 흩뿌려진 페인트
+	NOA_MEAL(32), STICKY_PAINT(34), SCATTERED_PAINT(35),
+	//Noa T2: 덧칠하기, 상상하는 대로, 나비가 날라가~, 따라 그리기!
+	OVERPAINT(37), AS_IMAGINED(38), BUTTERFLIES(39), COPY_DRAWING(40),
+	//Noa T3: 거리 예술가, 가짜 예술가
+	STREET_ARTIST(41, 3), FAKE_ARTIST(42, 3),
+	//환상의 정원 T3: 다시 그려야 겠다~, 보호받는 공주님, 살아 움직이는 그림
+	REDRAW(43, 3), PROTECTED_PRINCESS(44, 3), LIVING_PAINTING(45, 3),
+	//마녀화: 액체 조종 마법 T3: 검게 물드는 눈물, 넘쳐흐르는 물감, 들키고 싶지 않은 원죄
+	BLACK_TEARS(46, 3), OVERFLOWING_PAINT(47, 3), HIDDEN_SIN(48, 3),
+	//노아의 아틀리에! T4: 어디로든 문, 어디 갔게~?, 영감이 떠올랐어!
+	ANYWHERE_DOOR(49, 4), WHERE_DID_I_GO(50, 4), INSPIRATION(51, 4),
+	//물거품이 되어 T4: 잡을 수 없는 물방울, 노아도 싸울 수 있어~, 물이 노아를 지켜줘~
+	UNCATCHABLE_DROP(52, 4), NOA_CAN_FIGHT(53, 4), WATER_PROTECTS(54, 4),
+	//드리핑 T4: 비가 그치지 않아, 비로 차오르는 물감, 차가운 비
+	ENDLESS_RAIN(55, 4), RAIN_PAINT(56, 4), COLD_RAIN(57, 4),
+
 	//Mage T1
 	EMPOWERING_MEAL(32), SCHOLARS_INTUITION(33), LINGERING_MAGIC(34), BACKUP_BARRIER(35),
 	//Mage T2
@@ -608,6 +627,12 @@ public enum Talent {
 			//[Manosaba] 감옥 식사: 다음 2/3번의 물리 공격 피해 +2
 			Buff.affect( hero, PhysicalEmpower.class).set(2, 1 + hero.pointsInTalent(PRISON_MEAL));
 		}
+		if (hero.hasTalent(NOA_MEAL)){
+			//[Manosaba] 노아 감옥 식사: 페인트 통 0.5/1칸 충전
+			com.shatteredpixel.shatteredpixeldungeon.items.artifacts.PaintCan can =
+					com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.Noa.paintCan(hero);
+			if (can != null) can.addCharge(0.5f * hero.pointsInTalent(NOA_MEAL));
+		}
 		if (hero.hasTalent(HEARTY_MEAL)){
 			//4/6 HP healed, when hero is below 33% health (with a little rounding up)
 			if (hero.HP/(float)hero.HT < 0.334f) {
@@ -789,6 +814,14 @@ public enum Talent {
 	}
 
 	public static void onScrollUsed( Hero hero, int pos, float factor, Class<?extends Item> cls ){
+		//[Manosaba] 따라 그리기!: 10/100턴 안에 페인트 통을 자신에게 쓰면 이 주문서를 한 번 더 사용
+		if (hero.hasTalent(COPY_DRAWING) && Scroll.class.isAssignableFrom(cls)
+				&& cls != ScrollOfUpgrade.class
+				&& cls != com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfEnchantment.class
+				&& cls != com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfMetamorphosis.class){
+			Buff.prolong(hero, com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.CopyDrawingTracker.class,
+					hero.pointsInTalent(COPY_DRAWING) == 2 ? 101f : 11f).item = cls;
+		}
 		if (hero.hasTalent(INSCRIBED_POWER)){
 			// 2/3 empowered wand zaps
 			Buff.affect(hero, ScrollEmpower.class).reset((int) (factor * (1 + hero.pointsInTalent(INSCRIBED_POWER))));
@@ -1008,8 +1041,8 @@ public enum Talent {
 			case WARRIOR: default: //[Manosaba] 타치바나 셰리
 				Collections.addAll(tierTalents, PRISON_MEAL, VETERANS_INTUITION, EVIDENCE_FOUND, DONT_KNOW_PAIN);
 				break;
-			case MAGE:
-				Collections.addAll(tierTalents, EMPOWERING_MEAL, SCHOLARS_INTUITION, LINGERING_MAGIC, BACKUP_BARRIER);
+			case MAGE: //[Manosaba] 죠가사키 노아
+				Collections.addAll(tierTalents, NOA_MEAL, THIEFS_INTUITION, STICKY_PAINT, SCATTERED_PAINT);
 				break;
 			case ROGUE:
 				Collections.addAll(tierTalents, CACHED_RATIONS, THIEFS_INTUITION, SUCKER_PUNCH, PROTECTIVE_SHADOWS);
@@ -1037,8 +1070,8 @@ public enum Talent {
 			case WARRIOR: default: //[Manosaba] 타치바나 셰리
 				Collections.addAll(tierTalents, IRON_STOMACH, TASTE_EVIDENCE, RUNIC_TRANSFERENCE, LETHAL_MOMENTUM, BROKEN_ALARM);
 				break;
-			case MAGE:
-				Collections.addAll(tierTalents, ENERGIZING_MEAL, INSCRIBED_POWER, WAND_PRESERVATION, ARCANE_VISION, SHIELD_BATTERY);
+			case MAGE: //[Manosaba] 죠가사키 노아
+				Collections.addAll(tierTalents, MYSTICAL_MEAL, OVERPAINT, AS_IMAGINED, BUTTERFLIES, COPY_DRAWING);
 				break;
 			case ROGUE:
 				Collections.addAll(tierTalents, MYSTICAL_MEAL, INSCRIBED_STEALTH, WIDE_SEARCH, SILENT_STEPS, ROGUES_FORESIGHT);
@@ -1066,8 +1099,8 @@ public enum Talent {
 			case WARRIOR: default: //[Manosaba] 타치바나 셰리
 				Collections.addAll(tierTalents, ONE_HAND_THROW, STRONGMAN);
 				break;
-			case MAGE:
-				Collections.addAll(tierTalents, DESPERATE_POWER, ALLY_WARP);
+			case MAGE: //[Manosaba] 죠가사키 노아
+				Collections.addAll(tierTalents, STREET_ARTIST, FAKE_ARTIST);
 				break;
 			case ROGUE:
 				Collections.addAll(tierTalents, ENHANCED_RINGS, LIGHT_CLOAK);
@@ -1120,6 +1153,12 @@ public enum Talent {
 				break;
 			case SHERRY_WITCH:
 				Collections.addAll(tierTalents, THINK_MONSTER, NOT_HUMAN, STILL_HUMAN);
+				break;
+			case NOA_GARDEN:
+				Collections.addAll(tierTalents, REDRAW, PROTECTED_PRINCESS, LIVING_PAINTING);
+				break;
+			case NOA_WITCH:
+				Collections.addAll(tierTalents, BLACK_TEARS, OVERFLOWING_PAINT, HIDDEN_SIN);
 				break;
 			case BATTLEMAGE:
 				Collections.addAll(tierTalents, EMPOWERED_STRIKE, MYSTICAL_CHARGE, EXCESS_CHARGE);

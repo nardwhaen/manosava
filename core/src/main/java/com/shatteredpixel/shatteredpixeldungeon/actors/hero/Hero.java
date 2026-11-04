@@ -794,6 +794,11 @@ public class Hero extends Char {
 			return false;
 		}
 
+		//[Manosaba] 물거품이 되어: 사용 중에는 공격할 수 없음 (노아도 싸울 수 있어~ 제외)
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.Noa.attackBlocked(this)) {
+			return false;
+		}
+
 		//can always attack adjacent enemies
 		if (Dungeon.level.adjacent(pos, enemy.pos)) {
 			return true;
@@ -883,6 +888,8 @@ public class Hero extends Char {
 
 		//[Manosaba] 셰리 서브클래스 버프(팔랑임 / 마녀 수치) 유지
 		Sherry.ensureSubclassBuffs(this);
+		//[Manosaba] 노아 마녀 수치 / 환상의 정원 버튼 유지
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.Noa.ensureBuffs(this);
 		
 		if (!ready) {
 			//do a full observe (including fog update) if not resting.
@@ -1635,6 +1642,9 @@ public class Hero extends Char {
 	
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
+
+		//[Manosaba] 보호받는 공주님: 방어력 적용 전 피해의 일부를 소환물이 대신 받음
+		damage = com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.Noa.shareDamage(this, enemy, damage);
 		
 		if (damage > 0 && subClass == HeroSubClass.BERSERKER){
 			Berserk berserk = Buff.affect(this, Berserk.class);
@@ -1741,6 +1751,11 @@ public class Hero extends Char {
 			if (buff(WitchForm.class) != null){
 				//지연되지 않은 피해는 맞는 순간 30% 감소
 				dmg = Math.round(dmg * 0.7f);
+			}
+			//[Manosaba] 노아: 마녀화 10%/20% 감소, 물거품(잡을 수 없는 물방울) 25~100% 감소
+			float noaFactor = com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.Noa.incomingDamageFactor(this);
+			if (noaFactor < 1f){
+				dmg = Math.round(dmg * noaFactor);
 			}
 		}
 

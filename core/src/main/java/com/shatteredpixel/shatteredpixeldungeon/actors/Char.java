@@ -657,6 +657,10 @@ public abstract class Char extends Actor {
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
 		if (attacker.buff( Daze.class) != null) acuRoll *= 0.5f;
+		//[Manosaba] 들키고 싶지 않은 원죄: 페인트 범벅인 적의 명중 감소
+		if (attacker.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.PaintBlind.class) != null){
+			acuRoll *= attacker.buff(com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.PaintBlind.class).accuracyFactor();
+		}
 		for (ChampionEnemy buff : attacker.buffs(ChampionEnemy.class)){
 			acuRoll *= buff.evasionAndAccuracyFactor();
 		}
@@ -916,6 +920,11 @@ public abstract class Char extends Actor {
 		//[Manosaba] 셰리가 주는 피해: 마녀화 +40%, 범인 지목 +30%(+명탐정의 추리)
 		if (src instanceof Hero && src != this){
 			damage *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.sherry.Sherry.outgoingDamageFactor((Hero) src, this);
+		}
+		//[Manosaba] 노아: 물거품 중 공격 피해 25/50/75/100% (일반 공격·투척·마법 막대)
+		if (src != this && (src instanceof Hero || src instanceof com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand)
+				&& Dungeon.hero != null && com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.Noa.isNoa(Dungeon.hero)){
+			damage *= com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.Noa.outgoingDamageFactor(Dungeon.hero);
 		}
 
 		//two separate things can convert dmg to bleed, we handle that here
@@ -1230,7 +1239,8 @@ public abstract class Char extends Actor {
 
 	public synchronized boolean add( Buff buff ) {
 
-		if (buff(PotionOfCleansing.Cleanse.class) != null) { //cleansing buff
+		if (buff(PotionOfCleansing.Cleanse.class) != null
+				|| com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.noa.BubbleForm.blocksDebuffs(this)) { //cleansing buff, [Manosaba] 물거품
 			if (buff.type == Buff.buffType.NEGATIVE
 					&& !(buff instanceof AllyBuff)
 					&& !(buff instanceof LostInventory)){
@@ -1332,6 +1342,9 @@ public abstract class Char extends Actor {
 			previousPos = -1;
 		}
 		pos = step;
+
+		//[Manosaba] 노아가 그린 문·포탈 위에 올라섰을 때
+		com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.noa.NoaAtelier.onStep(this);
 		
 		if (this != Dungeon.hero) {
 			sprite.visible = Dungeon.level.heroFOV[pos];

@@ -149,6 +149,12 @@ public abstract class Wand extends Item {
 
 	public boolean tryToZap( Hero owner, int target ){
 
+		//[Manosaba] 물거품이 되어: 사용 중에는 마법 막대 불가 (노아도 싸울 수 있어~ 제외)
+		if (com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.Noa.attackBlocked(owner)){
+			GLog.w( Messages.get(com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.noa.BubbleForm.class, "no_attack") );
+			return false;
+		}
+
 		if (owner.buff(WildMagic.WildMagicTracker.class) == null && owner.buff(MagicImmune.class) != null){
 			GLog.w( Messages.get(this, "no_magic") );
 			return false;
