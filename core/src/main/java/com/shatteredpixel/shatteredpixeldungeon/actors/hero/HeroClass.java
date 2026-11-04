@@ -365,7 +365,7 @@ public enum HeroClass {
 			case WARRIOR: default:
 				return Assets.Splashes.SHERRY; //[Manosaba]
 			case MAGE:
-				return Assets.Splashes.MAGE;
+				return Assets.Splashes.NOA; //[Manosaba]
 			case ROGUE:
 				return Assets.Splashes.ROGUE;
 			case HUNTRESS:

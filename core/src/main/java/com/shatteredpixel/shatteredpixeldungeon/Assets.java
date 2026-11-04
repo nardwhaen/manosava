@@ -247,6 +247,7 @@ public class Assets {
 		public static final String WARRIOR  = "splashes/warrior.jpg";
 		public static final String SHERRY   = "splashes/sherry.png"; //[Manosaba] 셰리 선택 화면 그림
 		public static final String MAGE     = "splashes/mage.jpg";
+		public static final String NOA      = "splashes/noa.png"; //[Manosaba] 노아 선택 화면 그림
 		public static final String ROGUE    = "splashes/rogue.jpg";
 		public static final String HUNTRESS = "splashes/huntress.jpg";
 		public static final String DUELIST  = "splashes/duelist.jpg";
