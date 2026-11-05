@@ -109,8 +109,8 @@ public class FloatingText extends RenderedTextBlock {
 
 	//[Manosaba] 노아 마녀화 피해: 숨방울 모양 물방울
 	public static int NOA_BUBBLE = 25;
-	//[Manosaba] 숨방울은 5x5 크기로 칸 왼쪽 위에 그려져 있고, 숫자 오른쪽 아래에 붙여 표시함
-	private static final int SMALL_BUBBLE_SIZE = 5;
+	//[Manosaba] 숨방울(7x7 그림)을 픽셀 모양 그대로 작게 줄여서 숫자 오른쪽 아래에 붙여 표시함
+	private static final float BUBBLE_SCALE = 0.6f;
 	private boolean iconBottomRight = false;
 
 	//hit reason icons
@@ -188,7 +188,7 @@ public class FloatingText extends RenderedTextBlock {
 			if (iconBottomRight){ //[Manosaba] 숫자 오른쪽 아래
 				icon.x = left() + width() - icon.width();
 				icon.x = PixelScene.align(Camera.main, icon.x);
-				icon.y = PixelScene.align(Camera.main, top() + super.height() - icon.height() + 1);
+				icon.y = PixelScene.align(Camera.main, top() + super.height() - 7*BUBBLE_SCALE + 1); //그림은 7줄, 마지막 줄은 빈칸
 				return;
 			}
 			if (iconLeft){
@@ -243,7 +243,7 @@ public class FloatingText extends RenderedTextBlock {
 			iconLeft = left;
 			iconBottomRight = false;
 			if (iconIdx == NOA_BUBBLE){ //[Manosaba] 작은 숨방울: 오른쪽 아래
-				icon.frame((iconIdx % 18) * ICON_WIDTH, (iconIdx / 18) * ICON_HEIGHT, SMALL_BUBBLE_SIZE, SMALL_BUBBLE_SIZE);
+				icon.scale.set(BUBBLE_SCALE);
 				iconLeft = false;
 				iconBottomRight = true;
 				align(LEFT_ALIGN);
