@@ -98,6 +98,7 @@ public class NoaWitchForm extends Buff {
 		for (Char ch : chars){
 			if (!ch.isAlive() || !Noa.onWater(ch)) continue;
 			if (ch.alignment == Char.Alignment.ENEMY && Dungeon.level.heroFOV[ch.pos]){
+				NoaWaterSpike.hit(ch); //[Manosaba] 물줄기가 아래에서 찌르는 연출
 				ch.damage(dmg, this);
 				if (enhanced() && ch.isAlive()){
 					Noa.paintEnemy(hero, ch, 2f);
