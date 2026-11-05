@@ -71,9 +71,8 @@ public class GardenAction extends Buff implements ActionIndicator.Action {
 	public static void refresh( Char target ){
 		GardenAction g = target == null ? null : target.buff(GardenAction.class);
 		if (g == null) return;
-		NoaWitchPower w = target.buff(NoaWitchPower.class);
-		boolean witchReady = w != null && w.isFull() && target.buff(NoaWitchForm.class) == null;
-		if (!witchReady){
+		//[Manosaba] 마녀화 버튼은 따로 있으므로 소환 버튼은 항상 표시
+		if (ActionIndicator.action != g){
 			ActionIndicator.setAction(g);
 		}
 	}

@@ -93,6 +93,7 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.WallBlockingTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.WallOcclusionTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.WitchActionIndicator; //[Manosaba]
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Banner;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
@@ -213,6 +214,7 @@ public class GameScene extends PixelScene {
 	private AttackIndicator attack;
 	private LootIndicator loot;
 	private ActionIndicator action;
+	private WitchActionIndicator witchAction; //[Manosaba] 마녀화 전용 버튼
 	private ResumeIndicator resume;
 
 	{
@@ -515,6 +517,10 @@ public class GameScene extends PixelScene {
 		action = new ActionIndicator();
 		action.camera = uiCamera;
 		add( action );
+
+		witchAction = new WitchActionIndicator(); //[Manosaba]
+		witchAction.camera = uiCamera;
+		add( witchAction );
 
 		loot = new LootIndicator();
 		loot.camera = uiCamera;
@@ -925,6 +931,7 @@ public class GameScene extends PixelScene {
 			tagAttack = attack.active;
 			tagLoot = loot.visible;
 			tagAction = action.visible;
+			tagWitch = witchAction.visible; //[Manosaba]
 			tagResume = resume.visible;
 
 			layoutTags();
@@ -932,16 +939,19 @@ public class GameScene extends PixelScene {
 		} else if (tagAttack != attack.active ||
 				tagLoot != loot.visible ||
 				tagAction != action.visible ||
+				tagWitch != witchAction.visible || //[Manosaba]
 				tagResume != resume.visible) {
 
 			boolean tagAppearing = (attack.active && !tagAttack) ||
 									(loot.visible && !tagLoot) ||
 									(action.visible && !tagAction) ||
+									(witchAction.visible && !tagWitch) || //[Manosaba]
 									(resume.visible && !tagResume);
 
 			tagAttack = attack.active;
 			tagLoot = loot.visible;
 			tagAction = action.visible;
+			tagWitch = witchAction.visible; //[Manosaba]
 			tagResume = resume.visible;
 
 			//if a new tag appears, re-layout tags immediately
@@ -975,6 +985,7 @@ public class GameScene extends PixelScene {
 	private boolean tagAttack    = false;
 	private boolean tagLoot      = false;
 	private boolean tagAction    = false;
+	private boolean tagWitch     = false; //[Manosaba]
 	private boolean tagResume    = false;
 
 	public static void layoutTags() {
@@ -1037,6 +1048,12 @@ public class GameScene extends PixelScene {
 			scene.action.setRect( tagLeft, pos - Tag.SIZE, tagWidth, Tag.SIZE );
 			scene.action.flip(tagsOnLeft);
 			pos = scene.action.top();
+		}
+
+		if (scene.tagWitch) { //[Manosaba] 마녀화 버튼은 능력 버튼 위에
+			scene.witchAction.setRect( tagLeft, pos - Tag.SIZE, tagWidth, Tag.SIZE );
+			scene.witchAction.flip(tagsOnLeft);
+			pos = scene.witchAction.top();
 		}
 
 		if (scene.tagResume) {

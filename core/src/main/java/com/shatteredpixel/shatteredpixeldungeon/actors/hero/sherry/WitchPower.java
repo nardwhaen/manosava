@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.WitchActionIndicator; //[Manosaba] 마녀화 버튼은 따로
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -78,16 +79,16 @@ public class WitchPower extends Buff implements ActionIndicator.Action {
 
 	private void refreshAction(){
 		if (isFull() && target.buff(WitchForm.class) == null){
-			ActionIndicator.setAction(this);
+			WitchActionIndicator.setAction(this);
 		} else {
-			ActionIndicator.clearAction(this);
+			WitchActionIndicator.clearAction(this);
 		}
 	}
 
 	@Override
 	public void detach() {
 		super.detach();
-		ActionIndicator.clearAction(this);
+		WitchActionIndicator.clearAction(this);
 	}
 
 	public void activate(){
@@ -112,7 +113,7 @@ public class WitchPower extends Buff implements ActionIndicator.Action {
 		//TODO 이펙트: 마녀화 발동 연출 (아트 작업 때 추가)
 		target.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "activated"));
 
-		ActionIndicator.clearAction(this);
+		WitchActionIndicator.clearAction(this);
 		BuffIndicator.refreshHero();
 	}
 

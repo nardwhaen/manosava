@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
+import com.shatteredpixel.shatteredpixeldungeon.ui.WitchActionIndicator; //[Manosaba] 마녀화 버튼은 따로
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -73,7 +74,7 @@ public class NoaWitchPower extends Buff implements ActionIndicator.Action {
 			gain(WATER_GAIN);
 		}
 		if (isFull() && target.buff(NoaWitchForm.class) == null){
-			ActionIndicator.setAction(this); //불러온 게임에서도 버튼이 보이도록
+			WitchActionIndicator.setAction(this); //불러온 게임에서도 버튼이 보이도록
 		}
 		spend(TICK);
 		return true;
@@ -81,9 +82,9 @@ public class NoaWitchPower extends Buff implements ActionIndicator.Action {
 
 	public void refreshAction(){
 		if (isFull() && target.buff(NoaWitchForm.class) == null){
-			ActionIndicator.setAction(this);
+			WitchActionIndicator.setAction(this);
 		} else {
-			ActionIndicator.clearAction(this);
+			WitchActionIndicator.clearAction(this);
 			GardenAction.refresh(target);
 		}
 	}
@@ -91,7 +92,7 @@ public class NoaWitchPower extends Buff implements ActionIndicator.Action {
 	@Override
 	public void detach() {
 		super.detach();
-		ActionIndicator.clearAction(this);
+		WitchActionIndicator.clearAction(this);
 	}
 
 	public void activate(){
@@ -102,7 +103,7 @@ public class NoaWitchPower extends Buff implements ActionIndicator.Action {
 		points = 0;
 		Buff.affect(target, NoaWitchForm.class).set(NoaWitchForm.TURNS);
 		target.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(this, "activated"));
-		ActionIndicator.clearAction(this);
+		WitchActionIndicator.clearAction(this);
 		GardenAction.refresh(target);
 		BuffIndicator.refreshHero();
 	}
