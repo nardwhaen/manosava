@@ -110,7 +110,9 @@ public class FloatingText extends RenderedTextBlock {
 	//[Manosaba] 노아 마녀화 피해: 숨방울 모양 물방울
 	public static int NOA_BUBBLE = 25;
 	//[Manosaba] 숨방울(7x7 그림)을 픽셀 모양 그대로 작게 줄여서 숫자 오른쪽 아래에 붙여 표시함
-	private static final float BUBBLE_SCALE = 0.6f;
+	private static final float BUBBLE_SCALE = 0.8f;
+	//숫자와 방울 사이를 좁히는 정도 (클수록 숫자에 더 붙음)
+	private static final float BUBBLE_OVERLAP = 1.5f;
 	private boolean iconBottomRight = false;
 
 	//hit reason icons
@@ -186,7 +188,7 @@ public class FloatingText extends RenderedTextBlock {
 		super.layout();
 		if (icon != null){
 			if (iconBottomRight){ //[Manosaba] 숫자 오른쪽 아래
-				icon.x = left() + width() - icon.width();
+				icon.x = left() + super.width() - BUBBLE_OVERLAP;
 				icon.x = PixelScene.align(Camera.main, icon.x);
 				icon.y = PixelScene.align(Camera.main, top() + super.height() - 7*BUBBLE_SCALE + 1); //그림은 7줄, 마지막 줄은 빈칸
 				return;
