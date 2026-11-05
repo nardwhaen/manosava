@@ -1065,7 +1065,7 @@ public abstract class Char extends Actor {
 			if (src instanceof Burning)                                 icon = FloatingText.BURNING;
 			if (src instanceof Chill || src instanceof Frost)           icon = FloatingText.FROST;
 			if (src instanceof GeyserTrap || src instanceof StormCloud) icon = FloatingText.WATER;
-			if (src instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.NoaWitchForm) icon = FloatingText.WATER; //[Manosaba] 노아 마녀화 피해: 물방울 아이콘
+			if (src instanceof com.shatteredpixel.shatteredpixeldungeon.actors.hero.noa.NoaWitchForm) icon = FloatingText.NOA_BUBBLE; //[Manosaba] 노아 마녀화 피해: 숨방울 아이콘
 			if (src instanceof Burning)                                 icon = FloatingText.BURNING;
 			if (src instanceof Electricity)                             icon = FloatingText.SHOCKING;
 			if (src instanceof Bleeding)                                icon = FloatingText.BLEEDING;

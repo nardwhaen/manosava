@@ -107,6 +107,9 @@ public class FloatingText extends RenderedTextBlock {
 	public static int GOLD      = 23;
 	public static int ENERGY    = 24;
 
+	//[Manosaba] 노아 마녀화 피해: 숨방울 모양 물방울
+	public static int NOA_BUBBLE = 25;
+
 	//hit reason icons
 	public static int HIT_WEP   = 36;
 	public static int HIT_ARM   = 37;
