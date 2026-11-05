@@ -237,8 +237,11 @@ public enum HeroClass {
 		new com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging().identify();
 		new com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation().identify();
 
-		//[Manosaba] 테스트용 시드 (셰리와 같은 SHERRYTEST)
-		if (isSherryTestSeed()) giveSherryTestItems();
+		//[Manosaba] 테스트용 시드 (셰리와 같은 SHERRYTEST): 페인트 통 최대 레벨(10칸, 가득 충전)
+		if (isSherryTestSeed()){
+			giveSherryTestItems();
+			can.maxOut();
+		}
 	}
 
 	private static void initRogue( Hero hero ) {
