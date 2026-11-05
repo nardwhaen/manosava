@@ -62,7 +62,7 @@ import java.util.ArrayList;
 /**
  * [Manosaba] 죠가사키 노아의 페인트 통 (원본 도적 망토처럼 착용하는 유물).
  * 대상에 따라 효과가 달라짐: 적 느려짐 3턴 / 아군 보호막 10 + 회복 10 / 자신 보호막 10 / 빈 땅 물 폭탄.
- * 30턴마다 1칸 충전. 처음 3칸, 강화할 때마다 +1 (최대 10칸).
+ * 30턴마다 1칸 충전. 처음 3칸, 망토처럼 쓸수록 경험치가 쌓여 자동으로 레벨업, 레벨마다 +1칸 (최대 10칸).
  */
 public class PaintCan extends Artifact {
 
@@ -167,7 +167,9 @@ public class PaintCan extends Artifact {
 			return false;
 		}
 		int hp = hpCostFor(hero, needed);
+		int spent = Math.min(charge, needed); //[Manosaba] 체력으로 낸 몫은 경험치에 넣지 않음
 		charge = Math.max(0, charge - needed);
+		gainExp(spent);
 		if (hp > 0){
 			hero.HP -= hp;
 			hero.sprite.showStatus(com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite.NEGATIVE, Integer.toString(-hp));
@@ -189,6 +191,23 @@ public class PaintCan extends Artifact {
 		Talent.onArtifactUsed(hero);
 	}
 
+	//[Manosaba] 자동 강화: 페인트 1칸을 쓸 때마다 경험치 1, (레벨+1)*4 만큼 쌓이면 레벨업
+	//0->1: 4칸, 1->2: 8칸 ... 6->7: 28칸 (최대 레벨까지 총 112칸)
+	public static final int EXP_PER_LEVEL = 4;
+
+	private void gainExp( int spentCharges ){
+		if (spentCharges <= 0 || level() >= levelCap) return;
+		exp += spentCharges;
+		boolean leveled = false;
+		while (level() < levelCap && exp >= (level()+1) * EXP_PER_LEVEL){
+			exp -= (level()+1) * EXP_PER_LEVEL;
+			upgrade();
+			leveled = true;
+		}
+		if (level() >= levelCap) exp = 0;
+		if (leveled) GLog.p( Messages.get(this, "levelup") );
+	}
+
 	//칸 단위 충전 (소수점은 부분 충전으로 쌓임)
 	public void addCharge( float amount ){
 		if (charge >= chargeCap) return;
@@ -208,6 +227,7 @@ public class PaintCan extends Artifact {
 	public int drainAll(){
 		int used = charge;
 		charge = 0;
+		gainExp(used);
 		partialCharge = 0;
 		if (Dungeon.hero != null) onChargesSpent(Dungeon.hero);
 		updateQuickslot();
