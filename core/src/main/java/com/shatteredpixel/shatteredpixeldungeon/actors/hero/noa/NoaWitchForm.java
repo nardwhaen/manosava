@@ -96,8 +96,12 @@ public class NoaWitchForm extends Buff {
 		int dmg = damage();
 		ArrayList<Char> chars = new ArrayList<>(Actor.chars());
 		for (Char ch : chars){
-			if (!ch.isAlive() || !Noa.onWater(ch)) continue;
-			if (ch.alignment == Char.Alignment.ENEMY && Dungeon.level.heroFOV[ch.pos]){
+			if (!ch.isAlive()) continue;
+			//[Manosaba] 적은 날고 있어도 물 위에 있으면 물줄기에 찔림 (아군·노아 쪽은 기존처럼 발이 닿아야 함)
+			if (ch.alignment == Char.Alignment.ENEMY){
+				if (!Dungeon.level.water[ch.pos] || !Dungeon.level.heroFOV[ch.pos]) continue;
+			} else if (!Noa.onWater(ch)) continue;
+			if (ch.alignment == Char.Alignment.ENEMY){
 				NoaWaterSpike.hit(ch); //[Manosaba] 물줄기가 아래에서 찌르는 연출
 				ch.damage(dmg, this);
 				if (enhanced() && ch.isAlive()){
