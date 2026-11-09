@@ -42,8 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.SnakeSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -252,7 +250,7 @@ public abstract class NoaSummon extends Mob {
 	// ===== 뿔 달린 토끼 (2칸) =====
 	public static class Rabbit extends NoaSummon {
 		{
-			spriteClass = RatSprite.class;
+			spriteClass = NoaSummonSprites.RabbitSprite.class; //[Manosaba] 전용 스프라이트
 			HT = 1;
 			dmgMin = 5; dmgMax = 10; armMin = 0; armMax = 4;
 		}
@@ -262,16 +260,12 @@ public abstract class NoaSummon extends Mob {
 			int shield = (hero() != null && hero().hasTalent(Talent.LIVING_PAINTING)) ? 20 : 10;
 			Buff.affect(this, SummonShield.class).setShield(shield);
 		}
-		@Override
-		public CharSprite sprite() {
-			CharSprite s = super.sprite(); tint(s, 1f, 0.95f, 1f); return s;
-		}
 	}
 
 	// ===== 새하얗고 신성한 뱀 (4칸) =====
 	public static class Snake extends NoaSummon {
 		{
-			spriteClass = SnakeSprite.class;
+			spriteClass = NoaSummonSprites.SnakeSprite.class; //[Manosaba] 전용 스프라이트
 			HT = 30;
 			dmgMin = 7; dmgMax = 10; armMin = 0; armMax = 6;
 		}
@@ -281,10 +275,6 @@ public abstract class NoaSummon extends Mob {
 			int turns = (hero() != null && hero().pointsInTalent(Talent.LIVING_PAINTING) >= 2) ? 8 : 5;
 			Buff.affect(enemy, Poison.class).set(turns);
 			return super.attackProc(enemy, damage);
-		}
-		@Override
-		public CharSprite sprite() {
-			CharSprite s = super.sprite(); tint(s, 1f, 1f, 1f); return s;
 		}
 	}
 
