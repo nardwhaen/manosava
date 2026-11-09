@@ -335,8 +335,8 @@ public abstract class NoaSummon extends Mob {
 	public static class Dragon extends NoaSummon {
 		{
 			spriteClass = ElementalSprite.Fire.class;
-			HT = 70;
-			dmgMin = 20; dmgMax = 25; armMin = 4; armMax = 10;
+			HT = 90; //[Manosaba] 체력 90, 방어 6~10, 이동·공격 속도 1, 근거리, 비행
+			dmgMin = 20; dmgMax = 25; armMin = 6; armMax = 10;
 			flying = true;
 		}
 		@Override public Kind kind(){ return Kind.DRAGON; }
