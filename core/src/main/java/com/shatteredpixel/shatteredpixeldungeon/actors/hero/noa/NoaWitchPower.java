@@ -38,7 +38,7 @@ import com.watabou.noosa.Visual;
 import com.watabou.utils.Bundle;
 
 /**
- * 노아의 마녀 수치 (처음부터 있음). 물 위에 있으면 매 턴 +2, 100이 되면 마녀화.
+ * 노아의 마녀 수치 (처음부터 있음). 매 턴 +1, 물 위에 있으면 +3, 100이 되면 마녀화.
  */
 public class NoaWitchPower extends Buff implements ActionIndicator.Action {
 
@@ -48,7 +48,9 @@ public class NoaWitchPower extends Buff implements ActionIndicator.Action {
 	}
 
 	public static final float MAX = 100f;
-	public static final float WATER_GAIN = 2f;
+	//[Manosaba] 물이 적은 층에서도 마녀화할 수 있도록 어디서나 +1, 물 위에서는 +3
+	public static final float BASE_GAIN = 1f;
+	public static final float WATER_GAIN = 3f;
 
 	private float points = 0;
 
@@ -70,9 +72,7 @@ public class NoaWitchPower extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public boolean act() {
-		if (Noa.onWater(target)){
-			gain(WATER_GAIN);
-		}
+		gain(Noa.onWater(target) ? WATER_GAIN : BASE_GAIN);
 		if (isFull() && target.buff(NoaWitchForm.class) == null){
 			WitchActionIndicator.setAction(this); //불러온 게임에서도 버튼이 보이도록
 		}
