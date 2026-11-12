@@ -40,7 +40,7 @@ import java.util.ArrayList;
  */
 public class PaintButterflies extends NoaTimedBlob {
 
-	public static final int TURNS = 5;
+	public static final int TURNS = 10; //[Manosaba] 나비 지속 10턴
 
 	//cell에서 시작해 이어진 물 칸 전체에 나비를 퍼뜨림
 	public static void spread( int cell ){
