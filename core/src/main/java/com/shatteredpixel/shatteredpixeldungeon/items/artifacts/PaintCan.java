@@ -85,7 +85,13 @@ public class PaintCan extends Artifact {
 	public static final String AC_PAINT = "PAINT";
 	public static final String AC_DRAW  = "DRAW";
 
-	public static final float TURNS_PER_CHARGE = 30f;
+	//[Manosaba] 충전 속도: 레벨 0에서 20턴마다 1칸, 레벨이 오를수록 빨라져 최대 레벨(7)에서 10턴마다 1칸
+	public static final float TURNS_PER_CHARGE_BASE = 20f;
+	public static final float TURNS_PER_CHARGE_MAX_LVL = 10f;
+
+	public float turnsPerCharge(){
+		return TURNS_PER_CHARGE_BASE - (TURNS_PER_CHARGE_BASE - TURNS_PER_CHARGE_MAX_LVL) * Math.min(level(), levelCap) / (float)levelCap;
+	}
 
 	//최대 10칸
 	public static final int MAX_CAP = 10;
@@ -259,7 +265,7 @@ public class PaintCan extends Artifact {
 	public void charge( Hero target, float amount ) {
 		//유물 충전 효과(와, 밥이다! 등): amount턴만큼 충전
 		if (cursed || target.buff(MagicImmune.class) != null) return;
-		addCharge(amount / TURNS_PER_CHARGE);
+		addCharge(amount / turnsPerCharge());
 	}
 
 	@Override
@@ -330,7 +336,7 @@ public class PaintCan extends Artifact {
 		public boolean act() {
 			Hero hero = Dungeon.hero;
 			if (charge < chargeCap && !cursed && target.buff(MagicImmune.class) == null && Regeneration.regenOn()) {
-				partialCharge += chargeRateMultiplier(hero) / TURNS_PER_CHARGE;
+				partialCharge += chargeRateMultiplier(hero) / turnsPerCharge();
 				while (partialCharge >= 1) {
 					charge++;
 					partialCharge -= 1;
