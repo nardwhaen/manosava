@@ -95,6 +95,25 @@ public abstract class NoaSummon extends Mob {
 		protected int randomDestination() {
 			return Dungeon.hero != null ? Dungeon.hero.pos : super.randomDestination();
 		}
+
+		//[Manosaba] 매 턴 노아의 '지금' 위치를 향해 움직임 (예전 위치로 갔다가 멈추는 문제 수정)
+		@Override
+		protected boolean continueWandering() {
+			enemySeen = false;
+			if (Dungeon.hero == null) return super.continueWandering();
+			target = Dungeon.hero.pos;
+			if (Dungeon.level.adjacent(pos, target)) {
+				spend( TICK );
+				return true;
+			}
+			int oldPos = pos;
+			if (getCloser( target )) {
+				spend( 1 / speed() );
+				return moveSprite( oldPos, pos );
+			}
+			spend( TICK );
+			return true;
+		}
 	}
 
 	protected int dmgMin, dmgMax, armMin, armMax;
