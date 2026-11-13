@@ -53,13 +53,15 @@ jobs:
       - name: Build APK
         run: |
           chmod +x gradlew
-          ./gradlew android:assembleRelease --no-daemon
+          ./gradlew android:assembleRelease android:assembleDebug --no-daemon
 
       - name: Rename APK
         run: |
           TAG="v$(tr -d '[:space:]' < RELEASE_VERSION)"
           echo "TAG=$TAG" >> "$GITHUB_ENV"
           cp android/build/outputs/apk/release/android-release.apk "ManosabaPixelDungeon-${TAG}.apk"
+          # 디버그용: 모든 직업 해금, 일반 버전과 따로 설치됨(앱 이름 끝 INDEV)
+          cp android/build/outputs/apk/debug/*.apk "ManosabaPixelDungeon-${TAG}-debug.apk"
 
       - name: Publish release
         uses: softprops/action-gh-release@v2
@@ -67,7 +69,9 @@ jobs:
           tag_name: ${{ env.TAG }}
           target_commitish: ${{ github.sha }}
           name: Manosaba Pixel Dungeon ${{ env.TAG }}
-          files: ManosabaPixelDungeon-${{ env.TAG }}.apk
+          files: |
+            ManosabaPixelDungeon-${{ env.TAG }}.apk
+            ManosabaPixelDungeon-${{ env.TAG }}-debug.apk
           generate_release_notes: true
 
       - name: Remove signing key
