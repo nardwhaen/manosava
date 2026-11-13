@@ -40,7 +40,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.PaintCan;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ElementalSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -323,7 +322,7 @@ public abstract class NoaSummon extends Mob {
 	// ===== 전설의 용 (10칸) =====
 	public static class Dragon extends NoaSummon {
 		{
-			spriteClass = ElementalSprite.Fire.class;
+			spriteClass = NoaSummonSprites.DragonSprite.class; //[Manosaba] 전용 스프라이트
 			HT = 90; //[Manosaba] 체력 90, 방어 6~10, 이동·공격 속도 1, 근거리, 비행
 			dmgMin = 20; dmgMax = 25; armMin = 6; armMax = 10;
 			flying = true;

@@ -111,4 +111,32 @@ public class NoaSummonSprites {
 			return 0xFFC49862; //물감(갈색)
 		}
 	}
+
+	//전설의 용: 32x35 (2x2칸 크기 그림, 실제로는 1칸), 0-1 서기, 2-4 꿈틀 이동, 5-7 입을 크게 벌려 물기, 8-10 물감 속으로 가라앉음
+	public static class DragonSprite extends MobSprite {
+		public DragonSprite() {
+			super();
+			texture( "sprites/noa_dragon.png" );
+			TextureFilm frames = new TextureFilm( texture, 32, 35 );
+
+			idle = new Animation( 3, true );
+			idle.frames( frames, 0, 1 );
+
+			run = new Animation( 8, true );
+			run.frames( frames, 2, 3, 4, 3 );
+
+			attack = new Animation( 12, false );
+			attack.frames( frames, 5, 6, 6, 7 );
+
+			die = new Animation( 8, false );
+			die.frames( frames, 8, 9, 10 );
+
+			play( idle );
+		}
+
+		@Override
+		public int blood() {
+			return 0xFF48AA56; //물감(초록)
+		}
+	}
 }
