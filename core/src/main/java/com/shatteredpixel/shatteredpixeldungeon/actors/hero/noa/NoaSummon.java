@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.SpiritHawk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -281,7 +280,7 @@ public abstract class NoaSummon extends Mob {
 	// ===== 날카로운 발톱을 가진 새 (6칸) =====
 	public static class Bird extends NoaSummon {
 		{
-			spriteClass = SpiritHawk.HawkSprite.class;
+			spriteClass = NoaSummonSprites.BirdSprite.class; //[Manosaba] 전용 스프라이트
 			HT = 30;
 			dmgMin = 15; dmgMax = 20; armMin = 0; armMax = 6;
 			flying = true;

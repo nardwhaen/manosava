@@ -83,4 +83,32 @@ public class NoaSummonSprites {
 			return 0xFFFFF4C8; //물감(흰색·금색)
 		}
 	}
+
+	//날카로운 발톱을 가진 새(매): 16x15, 0-1 날갯짓, 2-4 비행 이동, 5-7 발톱 공격, 8-10 물감으로 번짐
+	public static class BirdSprite extends MobSprite {
+		public BirdSprite() {
+			super();
+			texture( "sprites/noa_bird.png" );
+			TextureFilm frames = new TextureFilm( texture, 16, 15 );
+
+			idle = new Animation( 6, true );
+			idle.frames( frames, 0, 1 );
+
+			run = new Animation( 10, true );
+			run.frames( frames, 2, 3, 4 );
+
+			attack = new Animation( 14, false );
+			attack.frames( frames, 5, 6, 6, 7 );
+
+			die = new Animation( 10, false );
+			die.frames( frames, 8, 9, 10 );
+
+			play( idle );
+		}
+
+		@Override
+		public int blood() {
+			return 0xFFC49862; //물감(갈색)
+		}
+	}
 }
