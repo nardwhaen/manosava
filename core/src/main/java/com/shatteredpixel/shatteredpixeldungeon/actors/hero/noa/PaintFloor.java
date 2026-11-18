@@ -34,6 +34,13 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
+import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.watabou.noosa.Group;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.TextureFilm;
+import com.watabou.utils.PointF;
+import com.watabou.utils.SparseArray;
 
 import java.util.ArrayList;
 
@@ -51,11 +58,79 @@ public class PaintFloor extends NoaTimedBlob {
 		floor.setTurns(Dungeon.level, cell, turns);
 	}
 
+	//[Manosaba] 무너지기 5턴 전부터 경고: 노아가 그 위에 있으면 하던 행동을 멈추고 빨간 글씨로 알림
+	public static final int WARN_TURNS = 5;
+	private static int warnedCell = -1;
+
+	@Override
+	protected void evolve() {
+		//노아가 경고 구역을 벗어나면 다음에 다시 올라섰을 때 또 경고
+		if (Dungeon.hero != null && cur != null){
+			int h = Dungeon.hero.pos;
+			if (h < 0 || h >= cur.length || cur[h] <= 0 || cur[h] > WARN_TURNS + 1) warnedCell = -1;
+		}
+		super.evolve();
+	}
+
 	@Override
 	protected void onTick( int cell, int left ) {
-		//끝나기 2턴 전 경고
-		if (left == 3 && Dungeon.hero != null && Dungeon.hero.pos == cell){
-			GLog.w(Messages.get(this, "warning"));
+		//left는 감소 전 값: 이번 턴이 지나면 left-1턴 남음
+		if (left - 1 <= WARN_TURNS && left - 1 > 0
+				&& Dungeon.hero != null && Dungeon.hero.pos == cell && warnedCell != cell){
+			warnedCell = cell;
+			GLog.n(Messages.get(this, "warning", left - 1));
+			Dungeon.hero.interrupt();
+		}
+	}
+
+	//[Manosaba] 남은 턴이 5 이하인 물 바닥에 구멍이 뚫려 가는 모습 (3단계)
+	@Override
+	public void use( BlobEmitter emitter ) {
+		super.use( emitter );
+		emitter.add( new HoleOverlay() );
+	}
+
+	private class HoleOverlay extends Group {
+		private final SparseArray<Image> holes = new SparseArray<>();
+		private final TextureFilm film;
+		{
+			Image probe = new Image("effects/noa_paint_hole.png");
+			film = new TextureFilm(probe.texture, 16, 16);
+		}
+
+		@Override
+		public void update() {
+			super.update();
+			if (Dungeon.level == null || cur == null) return;
+			//사라진 칸 정리
+			for (int cell : holes.keyArray()){
+				int l = cell < cur.length ? cur[cell] : 0;
+				if (l <= 0 || l > WARN_TURNS || Dungeon.level.map[cell] != Terrain.WATER){
+					Image im = holes.get(cell);
+					holes.remove(cell);
+					im.killAndErase();
+				}
+			}
+			if (volume <= 0) return;
+			for (int i = area.left; i < area.right; i++){
+				for (int j = area.top; j < area.bottom; j++){
+					int cell = i + j * Dungeon.level.width();
+					if (cell >= cur.length) continue;
+					int l = cur[cell];
+					if (l <= 0 || l > WARN_TURNS || Dungeon.level.map[cell] != Terrain.WATER) continue;
+					int stage = l >= 4 ? 0 : (l >= 2 ? 1 : 2);
+					Image im = holes.get(cell);
+					if (im == null){
+						im = new Image("effects/noa_paint_hole.png");
+						PointF p = DungeonTilemap.tileToWorld(cell);
+						im.x = p.x; im.y = p.y;
+						holes.put(cell, im);
+						add(im);
+					}
+					im.frame(film.get(stage));
+					im.visible = Dungeon.level.visited[cell] || Dungeon.level.heroFOV[cell];
+				}
+			}
 		}
 	}
 
