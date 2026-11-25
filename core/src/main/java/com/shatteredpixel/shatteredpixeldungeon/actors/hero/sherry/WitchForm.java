@@ -87,7 +87,7 @@ public class WitchForm extends Buff {
 
 	@Override
 	public void tintIcon(Image icon) {
-		icon.hardlight(0.7f, 0.2f, 1f);
+		icon.hardlight(0.3f, 0.6f, 1f); //[Manosaba] 셰리 마녀화: 파랑
 	}
 
 	@Override

@@ -135,12 +135,12 @@ public class NoaWitchForm extends Buff {
 
 	@Override
 	public int icon() {
-		return BuffIndicator.BERSERK; //TODO 노아 전용 아이콘
+		return BuffIndicator.NOA_WITCH; //[Manosaba] 셰리 마녀화 아이콘을 흑백 반전
 	}
 
 	@Override
 	public void tintIcon(Image icon) {
-		icon.hardlight(0.3f, 0.6f, 1f);
+		icon.resetColor(); //흑백 그대로
 	}
 
 	@Override

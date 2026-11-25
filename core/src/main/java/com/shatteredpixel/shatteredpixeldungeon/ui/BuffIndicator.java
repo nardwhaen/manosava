@@ -138,6 +138,7 @@ public class BuffIndicator extends Component {
 	public static final int THROWN_WEP  = 85;
 	//[Manosaba] 셰리 전용 버프 아이콘
 	public static final int WITCH_METER = 86; //마녀 수치 (금 간 하트)
+	public static final int NOA_WITCH   = 87; //[Manosaba] 노아 마녀화 (흰 바탕에 검은 얼굴, 색 반전)
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;
