@@ -52,6 +52,8 @@ public class HeroIcon extends Image {
 	public static final int PALADIN     = 11;
 	public static final int SHERRY_WITCH = 12; //[Manosaba] 셰리 마녀화 눈
 	public static final int SHERRY_FAIRY = 13; //[Manosaba] 셰리 요정 (날개 달린 모자)
+	public static final int NOA_WITCH    = 14; //[Manosaba] 노아 마녀화 (흰 바탕의 검은 물방울)
+	public static final int NOA_GARDEN   = 15; //[Manosaba] 노아 환상의 정원 (꽃밭을 칠하는 붓)
 
 	//abilities
 	public static final int HEROIC_LEAP     = 16;

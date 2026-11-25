@@ -90,7 +90,7 @@ public class GardenAction extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public int actionIcon() {
-		return HeroIcon.WARDEN; //TODO 환상의 정원 전용 아이콘
+		return HeroIcon.NOA_GARDEN; //[Manosaba] 환상의 정원 버튼 (보조직업 아이콘과 같은 그림)
 	}
 
 	@Override

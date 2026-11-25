@@ -115,7 +115,7 @@ public class NoaWitchPower extends Buff implements ActionIndicator.Action {
 
 	@Override
 	public int actionIcon() {
-		return HeroIcon.WARLOCK; //TODO 노아 전용 마녀화 아이콘
+		return HeroIcon.NOA_WITCH; //[Manosaba] 노아 마녀화 버튼 (보조직업 아이콘과 같은 그림)
 	}
 
 	@Override

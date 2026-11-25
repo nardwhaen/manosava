@@ -67,7 +67,7 @@ import java.util.ArrayList;
 public class PaintCan extends Artifact {
 
 	{
-		image = ItemSpriteSheet.BREW_AQUA; //TODO 페인트 통 전용 그림
+		image = ItemSpriteSheet.ARTIFACT_PAINTCAN; //[Manosaba] 노아의 페인트 통
 
 		exp = 0;
 		levelCap = 7;
