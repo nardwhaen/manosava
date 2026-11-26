@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.PaintCan; //[Manosaba]
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -75,8 +75,9 @@ public class VaultMirror extends NPC {
 					((BrokenSeal)reward).setGlyph(Armor.Glyph.random());
 					break;
 				case MAGE:
-					reward = new MagesStaff().upgrade(3).identify(false);
-					((MagesStaff)reward).enchant();
+					//[Manosaba] 노아(MAGE 자리)는 마법사 지팡이 대신 강화된 페인트 통
+					reward = new PaintCan().upgrade(5).identify(false);
+					((PaintCan) reward).fillCharges();
 					break;
 				case ROGUE:
 					reward = new CloakOfShadows().upgrade(8).identify(false);
@@ -101,6 +102,11 @@ public class VaultMirror extends NPC {
 	@Override
 	public boolean interact(Char c) {
 		if (c instanceof Hero) {
+			//[Manosaba] 이전 버전에서 만들어진 거울이 마법사 지팡이를 들고 있으면 페인트 통으로 바꿈
+			if (reward instanceof com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff
+					&& ((Hero) c).heroClass == HeroClass.MAGE){
+				createReward(HeroClass.MAGE);
+			}
 			ShatteredPixelDungeon.runOnRenderThread(new Callback() {
 				@Override
 				public void call() {
@@ -112,7 +118,7 @@ public class VaultMirror extends NPC {
 								sceneText += Messages.get(VaultMirror.class, "scene_warrior");
 								break;
 							case MAGE:
-								sceneText += Messages.get(VaultMirror.class, "scene_mage");
+								sceneText += Messages.get(VaultMirror.class, "scene_noa"); //[Manosaba]
 								break;
 							case ROGUE:
 								sceneText += Messages.get(VaultMirror.class, "scene_rogue");

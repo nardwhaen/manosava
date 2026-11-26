@@ -352,6 +352,11 @@ public abstract class Mob extends Char {
 
 	//FIXME this is sort of a band-aid correction for allies needing more intelligent behaviour
 	protected boolean intelligentAlly = false;
+
+	//[Manosaba] 아군일 때 이 대상을 스스로 노리지 않음 (노아 소환수가 잠든 수정 골렘을 깨우지 않게)
+	protected boolean ignoresAsTarget( Char ch ){
+		return false;
+	}
 	
 	protected Char chooseEnemy() {
 
@@ -407,6 +412,9 @@ public abstract class Mob extends Char {
 			//current enemy is invulnerable
 			} else if (enemy.isInvulnerable(getClass())){
 				newEnemy = true;
+			//[Manosaba] 일부 소환수가 무시하는 대상
+			} else if (ignoresAsTarget(enemy)){
+				newEnemy = true;
 			}
 		}
 
@@ -444,7 +452,8 @@ public abstract class Mob extends Char {
 				//look for hostile mobs to attack
 				for (Mob mob : Dungeon.level.mobs)
 					if (mob.alignment == Alignment.ENEMY && fieldOfView[mob.pos]
-							&& mob.invisible <= 0 && !mob.isInvulnerable(getClass()))
+							&& mob.invisible <= 0 && !mob.isInvulnerable(getClass())
+							&& !ignoresAsTarget(mob)) //[Manosaba]
 						//do not target passive mobs
 						//intelligent allies also don't target mobs which are wandering or asleep
 						if (mob.state != mob.PASSIVE &&

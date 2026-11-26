@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ShieldBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalGuardian;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
@@ -88,6 +89,12 @@ public abstract class NoaSummon extends Mob {
 	}
 
 	public abstract Kind kind();
+
+	//[Manosaba] 광산 퀘스트에서 잠들어 있는 수정 골렘(수정 수호자)은 먼저 건드리지 않음
+	@Override
+	protected boolean ignoresAsTarget( Char ch ){
+		return ch instanceof CrystalGuardian && ((CrystalGuardian) ch).state == ((CrystalGuardian) ch).SLEEPING;
+	}
 
 	//싸울 적이 없으면 노아 곁으로 돌아옴
 	protected class FollowNoa extends Wandering {

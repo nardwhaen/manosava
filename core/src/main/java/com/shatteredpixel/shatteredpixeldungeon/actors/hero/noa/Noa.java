@@ -54,8 +54,13 @@ public class Noa {
 		return ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.MAGE;
 	}
 
+	//[Manosaba] 페인트 통이 여러 개면 (거울 보상 등) 가장 레벨이 높은 것을 씀
 	public static PaintCan paintCan( Hero hero ){
-		return hero.belongings.getItem(PaintCan.class);
+		PaintCan best = null;
+		for (PaintCan can : hero.belongings.getAllItems(PaintCan.class)){
+			if (best == null || can.level() > best.level()) best = can;
+		}
+		return best;
 	}
 
 	//매 턴 Hero.act에서 호출: 마녀 수치 버프 유지

@@ -214,6 +214,12 @@ public class PaintCan extends Artifact {
 		if (leveled) GLog.p( Messages.get(this, "levelup") );
 	}
 
+	//[Manosaba] 거울 보상용: 충전 가득
+	public void fillCharges(){
+		charge = chargeCap;
+		partialCharge = 0;
+	}
+
 	//[Manosaba] 테스트 시드용: 최대 레벨 + 가득 충전
 	public void maxOut(){
 		while (level() < levelCap) upgrade();
